@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Http;
 class VdoCipherService
 {
     protected $apiKey;
+    protected $baseURL;
 
     // Constructor to initialize the API key from the configuration
     public function __construct()
     {
         $this->apiKey = config('services.vdocipher.key');
+        $this->baseURL = config('services.vdocipher.base_url');
     }
 
     // Method to get the list of videos from the VdoCipher API
@@ -22,7 +24,7 @@ class VdoCipherService
             ->withHeaders([
                 'Authorization' => 'Apisecret ' . $this->apiKey,
             ])
-            ->get('https://dev.vdocipher.com/api/videos')
+            ->get($this->baseURL)
             ->json();
 
         // Return the list of videos or an empty array if not found
@@ -37,7 +39,7 @@ class VdoCipherService
             ->withHeaders([
                 'Authorization' => 'Apisecret ' . $this->apiKey,
             ])
-            ->put('https://dev.vdocipher.com/api/videos?title=' . $title);
+            ->put($this->baseURL . '?title=' . $title);
 
         // Return the response as JSON
         return $response->json();
@@ -55,7 +57,7 @@ class VdoCipherService
     // Method to get a video OTP (One-Time Password) from the VdoCipher API
     public function getVideoOtp($videoID)
     {
-        $url = 'https://dev.vdocipher.com/api/videos/' . $videoID . '/otp';
+        $url = $this->baseURL . '/' . $videoID . '/otp';
         $response = Http::acceptJson()
             ->withHeaders([
                 'Authorization' => 'Apisecret ' . $this->apiKey,

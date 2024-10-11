@@ -37,6 +37,7 @@ return [
 
     'vdocipher' => [
         'key' => env('VDOCIPHER_API_KEY'),
+        'base_url' => env('VDOCIPHER_BASE_URL', 'https://dev.vdocipher.com/api/videos'),
     ],
 
 ];
