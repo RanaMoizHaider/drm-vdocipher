@@ -17,8 +17,8 @@
                 <iframe
                     src="https://player.vdocipher.com/v2/?otp={{ $cred['otp'] }}&playbackInfo={{ $cred['playbackInfo'] }}"
                     style="border:0;max-width:100%;position:absolute;top:0;left:0;height:100%;width:100%;"
-                    allowfullscreen="true"
                     allow="encrypted-media"
+                    allowfullscreen
                 >
                 </iframe>
             </div>
