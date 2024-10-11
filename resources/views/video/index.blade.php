@@ -10,8 +10,8 @@
         <ul class="space-y-4">
             @foreach ($videos as $video)
                 <li class="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md">
-                    <span>{{ $video['name'] }}</span>
                     <a href="{{ route('video.play', ['token' => $video['token']]) }}"
+                    <span>{{ $video['title'] }}</span>
                        class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                         Play
                     </a>
