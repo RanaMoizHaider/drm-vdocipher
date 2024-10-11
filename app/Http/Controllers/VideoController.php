@@ -75,12 +75,12 @@ class VideoController extends Controller
 
             dd($response->json());
 
-            if ($response->status() === 201) {
-                return redirect()->route('video.index')->with('success', 'Video uploaded successfully.');
-            } else {
-                \Log::error('Video upload failed', ['response' => $response->body()]);
-                return redirect()->back()->withErrors('Failed to upload video. Please try again.');
-            }
+//            if ($response->status() === 201) {
+//                return redirect()->route('video.index')->with('success', 'Video uploaded successfully.');
+//            } else {
+//                \Log::error('Video upload failed', ['response' => $response->body()]);
+//                return redirect()->back()->withErrors('Failed to upload video. Please try again.');
+//            }
         } catch (\Exception $e) {
             \Log::error('Video upload exception', ['exception' => $e]);
             return redirect()->back()->withErrors('An error occurred while uploading the video.');
