@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'vdocipher' => [
+        'key' => env('VDOCIPHER_API_KEY'),
+    ],
+
 ];
