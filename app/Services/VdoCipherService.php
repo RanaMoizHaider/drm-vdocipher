@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * File: VdoCipherService.php
+ * Description: Service class to interact with the VdoCipher API for video management.
+ * Author: Moiz Haider
+ * Date: 11 October 2024
+ */
+
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
