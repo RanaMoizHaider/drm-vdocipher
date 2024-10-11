@@ -23,12 +23,12 @@
         <!-- List all videos -->
         <ul class="space-y-4">
             @foreach ($videos as $video)
-                <li class="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md">
+                <li class="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md text-white">
                     <span>{{ $video['title'] }}</span>
                     @if($video['status'] == 'ready')
                         <!-- Link to play the video -->
                         <a href="{{ route('video.play', ['videoID' => $video['id']]) }}"
-                           class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+                           class="bg-blue-500 py-2 px-4 rounded-lg hover:bg-blue-600">
                             Play
                         </a>
                     @endif
