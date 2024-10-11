@@ -56,7 +56,9 @@ class VideoController extends Controller
         }
 
         $clientPayload = $credentials['clientPayload'];
+        // Assign uploadLink to a variable and remove it from clientPayload
         $uploadLink = $clientPayload['uploadLink'];
+        unset($clientPayload['uploadLink']); // Remove 'uploadLink' from clientPayload
 
         // Prepare the form data
         $formData = array_merge($clientPayload, [
@@ -72,8 +74,6 @@ class VideoController extends Controller
                     $file->getClientOriginalName()
                 )
                 ->post($uploadLink, $formData);
-
-            dd($response->json());
 
             if ($response->status() === 201) {
                 return redirect()->route('video.index')->with('success', 'Video uploaded successfully.');
