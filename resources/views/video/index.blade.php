@@ -21,7 +21,7 @@
         <!-- Check if there are videos -->
         @if(count($videos) > 0)
             <!-- List all videos -->
-            <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
+            <div class="grid gap-6 lg:grid-cols-4 lg:gap-8">
                 @foreach ($videos as $video)
                     <a
                         href="{{ $video['status'] == 'ready' ? route('video.play', ['videoID' => $video['id']]) : '#'}}"
