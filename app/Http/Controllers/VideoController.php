@@ -3,39 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Services\VdoCipherService;
 
 class VideoController extends Controller
 {
+    protected $vdoCipherService;
+
+    public function __construct(VdoCipherService $vdoCipherService)
+    {
+        $this->vdoCipherService = $vdoCipherService;
+    }
+
     public function index()
     {
-        // Calling API to get videos
-        $response = Http::acceptJson()
-            ->withHeaders([
-                'Authorization' => 'Apisecret ' . config('services.vdocipher.key'),
-            ])
-            ->get('https://dev.vdocipher.com/api/videos')
-            ->json();
-        $videos = $response['rows'];
-
+        $videos = $this->vdoCipherService->getVideos();
         return view('video.index', compact('videos'));
     }
 
     public function showUploadForm()
     {
         return view('video.upload');
-    }
-
-    private function getCredentials($title)
-    {
-        // Calling API to get video credentials
-        $response = Http::asForm()
-            ->withHeaders([
-                'Authorization' => 'Apisecret ' . config('services.vdocipher.key'),
-            ])
-            ->put('https://dev.vdocipher.com/api/videos?title=' . $title);
-
-        return $response->json();
     }
 
     public function uploadVideo(Request $request)
@@ -45,35 +32,26 @@ class VideoController extends Controller
         ]);
 
         $file = $request->file('video');
-        $filename = $file->getClientOriginalName();
-        $filenameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
+        $filenameWithoutExtension = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
         // Get the credentials for uploading
-        $credentials = $this->getCredentials($filenameWithoutExtension);
+        $credentials = $this->vdoCipherService->getVideoCredentials($filenameWithoutExtension);
 
         if (!isset($credentials['clientPayload'])) {
             return redirect()->back()->withErrors('Failed to get upload credentials.');
         }
 
         $clientPayload = $credentials['clientPayload'];
-        // Assign uploadLink to a variable and remove it from clientPayload
         $uploadLink = $clientPayload['uploadLink'];
         unset($clientPayload['uploadLink']); // Remove 'uploadLink' from clientPayload
 
-        // Prepare the form data
         $formData = array_merge($clientPayload, [
             'success_action_status' => 201,
             'success_action_redirect' => '',
         ]);
 
         try {
-            $response = Http::asMultipart()
-                ->attach(
-                    'file',
-                    fopen($file->getRealPath(), 'r'),
-                    $file->getClientOriginalName()
-                )
-                ->post($uploadLink, $formData);
+            $response = $this->vdoCipherService->uploadVideoToApi($uploadLink, $formData, $file);
 
             if ($response->status() === 201) {
                 return redirect()->route('video.index')->with('success', 'Video uploaded successfully.');
@@ -89,18 +67,7 @@ class VideoController extends Controller
 
     public function playVideo($videoID)
     {
-        $url = 'https://dev.vdocipher.com/api/videos/' . $videoID . '/otp';
-        $response = Http::acceptJson()->contentType('application/json')
-            ->withBody('{
-              "ttl":300
-            }')
-            ->withHeaders([
-                'Authorization' => 'Apisecret ' . config('services.vdocipher.key'),
-            ])
-            ->post($url);
-
-        $cred = $response->json();
-
+        $cred = $this->vdoCipherService->getVideoOtp($videoID);
         return view('video.play', compact('cred'));
     }
 }
