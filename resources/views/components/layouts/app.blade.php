@@ -48,7 +48,7 @@
                     {{ $slot }}
 
                     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                        Encrypted Video Player using VdoCipher
+                        View code on <a href="https://github.com/RanaMoizHaider/vdo" target="_blank" class="text-black dark:text-white">Github</a>
                     </footer>
                 </div>
             </div>
