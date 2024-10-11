@@ -14,7 +14,7 @@
             <div class="mb-4">
                 <input type="file" name="video" id="video" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" accept="video/*" required>
                 @error('video')
-                    <p class="text-red-500 mt-2">{{ $message }}</p>
+                    <p class="text-red-500 mt-2">{{ $error }}</p>
                 @enderror
             </div>
             <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Upload Video</button>
