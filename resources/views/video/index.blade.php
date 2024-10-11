@@ -11,10 +11,12 @@
             @foreach ($videos as $video)
                 <li class="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md">
                     <span>{{ $video['title'] }}</span>
-                    <a href="{{ route('video.play', ['videoID' => $video['id']]) }}"
-                       class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                        Play
-                    </a>
+                    @if($video['status'] == 'ready')
+                        <a href="{{ route('video.play', ['videoID' => $video['id']]) }}"
+                           class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+                            Play
+                        </a>
+                    @endif
                 </li>
             @endforeach
         </ul>
